@@ -1,0 +1,18 @@
+extend ../layouts/default.pug
+
+block main
+  .container
+        .main-card
+          h3.text-center.main-title Mẫu Thư Tình Yêu
+          p.text-center.text-muted Chọn một mẫu thư để bắt đầu tạo mã QR tình yêu 💌
+          hr
+          // Sample list
+          each template in templates
+            .sample-item.d-flex.flex-lg-row.flex-column.align-items-center.text-center.text-lg-start
+              video(controls)
+                source(src=template.previewUrl, type="video/mp4")
+                | Video không hỗ trợ
+              .flex-grow-1.mt-3.mt-lg-0.ms-lg-3
+                strong.text-danger #{template.name}
+                //- p.mb-0.text-muted Video demo thư tình #{val}
+              button.btn.btn-love.mt-3.mt-lg-0.ms-lg-3(type="button") Tạo

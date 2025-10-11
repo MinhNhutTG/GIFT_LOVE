@@ -1,0 +1,72 @@
+doctype html
+html(lang="vi")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover")
+    title Thiệp Điện Tử — Cho Em 💌
+    //- Fonts (Google) - nếu dùng offline, thay bằng font hệ thống
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap")
+    link(rel="stylesheet" href="/css/style.css")
+    //- Theme color for mobile browser bar
+    meta(name="theme-color" content="#fff0f6")
+  body
+    //- Background & ambient lights
+    .page-bg
+      .bg-lights
+      //- decorative gradient overlay
+      .vignette
+
+    //- Main container
+    main.container
+      //- centered gift card
+      .gift-card-wrapper
+        .gift-card-inner(role="button" tabindex="0" aria-pressed="false" aria-label="Mở thiệp" data-open="false")
+          //- CARD FRONT
+          .card-front
+            .front-overlay
+              img.logo(src="/image/GIFTLOVE.png" alt="Paper texture" aria-hidden="true")
+              h1.title Cho Em 💌
+              p.subtitle Một lời tỏ tình từ anh
+              p.cta Nhấn hoặc chạm để mở thiệp
+              button.hint-btn(onclick="openCard();event.stopPropagation();") Mở thiệp
+          //- CARD INSIDE
+          .card-inside
+            //- audio elements (no autoplay until user interaction)
+            audio#bg-music(loop preload="auto" src="/sound/sound-1.mp3")
+            audio#voice-message(preload="auto" src="/sound/voice.mp3")
+
+            //- inside layout
+            .inside-layout
+              .left-pane
+                h2.to-name Gửi đến em — người anh yêu
+                .message-box
+                  //- the typed paragraph (will be typed by JS)
+                  p.message-text#typed Chúc em luôn bình yên và hạnh phúc trên hành trình của riêng mình. Dù ngày nắng hay mưa, mong nụ cười của em vẫn luôn rạng rỡ như ánh ban mai. Cảm ơn em vì đã xuất hiện – mang đến cho anh những cảm xúc thật đẹp, thật trong. Anh chỉ mong mỗi sớm mai thức dậy, người đầu tiên anh nghĩ đến vẫn là em, và người nhận được lời chúc an lành đầu tiên cũng chính là em
+                  small.caption Nhấn play để nghe lời chúc bằng giọng thật của anh.
+                .actions
+                  button.btn.primary(onclick="toggleMusic(event)") 🎵 Nhạc nền
+                  button.btn.secondary(onclick="toggleVoice(event)") 🔊 Lời chúc
+                  a.btn.link(href="#", onclick="shareCard();return false;") 🔗 Chia sẻ
+              .right-pane
+                .media-frame
+                  video#memoryVideo(preload="metadata" poster="/thumbnail.jpg" webkit-playsinline playsinline controls)
+                    source(src="/video/video.mp4" type="video/mp4")
+                .media-caption Ảnh/Video kỷ niệm của chúng ta
+                
+                          
+             
+                
+                    
+
+            //- footer with small meta and save action
+            .card-footer
+              span.meta Ngày: #{new Date().toLocaleDateString()}
+              button.btn.save(onclick="saveCard();return false;") 💾 Lưu thiệp
+
+    //- heart canvases layer (for decorative hearts)
+    #heart-layer
+
+    //- scripts
+    script(src="/js/script.js")
+
