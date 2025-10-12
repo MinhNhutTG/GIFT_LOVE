@@ -13,6 +13,6 @@ block main
                 source(src=template.previewUrl, type="video/mp4")
                 | Video không hỗ trợ
               .flex-grow-1.mt-3.mt-lg-0.ms-lg-3
-                strong.text-danger #{template.name}
-                //- p.mb-0.text-muted Video demo thư tình #{val}
+                strong.text-danger #{template.title}
+                p.mb-0.text-muted  #{template.description}
               button.btn.btn-love.mt-3.mt-lg-0.ms-lg-3(type="button") Tạo

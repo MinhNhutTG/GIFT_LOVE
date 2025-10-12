@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
 const templateSchema  = new mongoose.Schema({
-    name: String,
+    title: String,
+    description:String,
     previewUrl: String,
-    isActive: Boolean,
+    deleted: {  type: Boolean, default: false },
+    isActive: {  type: Boolean, default: true },
+    fields: Array,
 })
 const Template = mongoose.model("Template", templateSchema, "templates");
 
