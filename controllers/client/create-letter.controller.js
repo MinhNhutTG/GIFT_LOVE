@@ -1,4 +1,4 @@
 // [GET] /admin/dashboard
 module.exports.createLetter = (req,res)=>{
-    res.send("hi");
+    res.render("./client/pages/form.pug");
 }

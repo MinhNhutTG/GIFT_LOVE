@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Photo Gallery Setup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #fbeeff;
+            font-family: "Quicksand", sans-serif;
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 500px;
+            margin: 40px auto;
+        }
+
+        .step-indicators {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .step-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #dee2e6;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+        }
+
+        .step-circle.active {
+            background-color: #ff5c8d;
+        }
+
+        .tab-btn.active {
+            background-color: #ffe6ef !important;
+            color: #ff3f75 !important;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tab-content {
+            max-height: 180px;
+            /* Giới hạn chiều cao hiển thị */
+            overflow-y: auto;
+            /* Bật scroll dọc nếu vượt quá */
+            padding-right: 5px;
+            /* Giữ khoảng cách với thanh cuộn */
+        }
+
+        /* ----- Tùy chỉnh thanh scroll (cho Chrome, Edge, Safari) ----- */
+        .tab-content::-webkit-scrollbar {
+            width: 8px;
+            /* Độ rộng thanh cuộn */
+        }
+
+        .tab-content::-webkit-scrollbar-track {
+            background: #ffeef4;
+            /* Màu nền rãnh */
+            border-radius: 10px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb {
+            background: #ff5c8d;
+            /* Màu thanh cuộn */
+            border-radius: 10px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb:hover {
+            background: #ff3f75;
+            /* Khi hover */
+        }
+
+        /* ----- Tùy chỉnh thanh cuộn cho Firefox ----- */
+        .tab-content {
+            scrollbar-width: thin;
+            scrollbar-color: #ff5c8d #ffeef4;
+        }
+
+        /* ----- Textarea styling (Lời nhắn gửi) ----- */
+        .message-box,
+        .message-box-dear {
+            background-color: #fff8fb;
+            /* Nền hồng nhạt */
+            border: 2px solid #ffd1e0;
+            /* Viền pastel */
+            border-radius: 15px;
+            /* Bo góc mềm mại */
+            padding: 12px 15px;
+            font-size: 1rem;
+            resize: vertical;
+            /* Cho phép kéo giãn theo chiều dọc */
+            transition: all 0.3s ease;
+        }
+
+        .message-box-dear {
+            height: 50px;
+        }
+
+        .message-box::placeholder,
+        .message-box-dear::placeholder {
+            color: #ff9ab6;
+            /* Màu placeholder dịu */
+            font-style: italic;
+        }
+
+        .message-box:focus {
+            outline: none;
+            border-color: #ff5c8d;
+            /* Viền hồng đậm khi focus */
+            background-color: #fff0f6;
+            /* Nền sáng hơn khi gõ */
+            box-shadow: 0 0 8px rgba(255, 92, 141, 0.3);
+        }
+
+        .video-upload {
+            background-color: #fff8fb;
+            border: 2px dashed #ffd1e0;
+            border-radius: 15px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .video-upload:hover {
+            border-color: #ff5c8d;
+            background-color: #fff0f6;
+        }
+
+        .video-upload:focus {
+            outline: none;
+            border-color: #ff5c8d;
+            box-shadow: 0 0 8px rgba(255, 92, 141, 0.3);
+        }
+
+        /* Tùy chọn: hiển thị video preview nhỏ */
+        #videoPreview {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .audio-upload {
+            background-color: #fff8fb;
+            border: 2px dashed #ffd1e0;
+            border-radius: 15px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .audio-upload:hover {
+            border-color: #ff5c8d;
+            background-color: #fff0f6;
+        }
+
+        .audio-upload:focus {
+            outline: none;
+            border-color: #ff5c8d;
+            box-shadow: 0 0 8px rgba(255, 92, 141, 0.3);
+        }
+
+        /* Preview audio style */
+        #audioPreview {
+            border-radius: 10px;
+            background: #fff8fb;
+            box-shadow: 0 0 6px rgba(255, 92, 141, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-card">
+        <h3 class="text-center text-danger fw-bold mb-4">Tạo mẫu </h3>
+
+        <!-- Steps -->
+        <div class="step-indicators">
+            <div class="step-circle active">1</div>
+            <div class="step-circle">2</div>
+            <div class="step-circle">3</div>
+            <div class="step-circle">4</div>
+        </div>
+
+        <form id="galleryForm">
+            <!-- Step 1 -->
+            <div class="step active">
+                <h5 class="mb-3">🎵 Choose a song for your gallery</h5>
+
+                <!-- Tabs -->
+                <ul class="nav nav-pills mb-3 justify-content-center" id="songTabs">
+                    <li class="nav-item">
+                        <button class="nav-link tab-btn active" type="button" data-tab="suggested">Nhạc đề xuất</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link tab-btn" type="button" data-tab="custom">Liên kết tùy chỉnh</button>
+                    </li>
+                </ul>
+
+                <div id="suggested" class="tab-content">
+                    <div class="list-group">
+                        <label class="list-group-item">
+                            <input class="form-check-input me-2" type="radio" name="song"
+                                value="The Perfect Fan - Backstreet Boys">
+                            🎧 The Perfect Fan - Backstreet Boys
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-2" type="radio" name="song" value="Dear Mama - 2Pac">
+                            🎧 Dear Mama - 2Pac
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-2" type="radio" name="song"
+                                value="A Song for Mama - Boyz II Men">
+                            🎧 A Song for Mama - Boyz II Men
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-2" type="radio" name="song"
+                                value="A Song for Mama - Boyz II Men">
+                            🎧 A Song for Mama - Boyz II Men
+                        </label>
+                        <label class="list-group-item">
+                            <input class="form-check-input me-2" type="radio" name="song"
+                                value="A Song for Mama - Boyz II Men">
+                            🎧 A Song for Mama - Boyz II Men
+                        </label>
+                    </div>
+                </div>
+
+                <div id="custom" class="tab-content hidden">
+                    <input type="text" class="form-control mt-2" placeholder="Dán liên kết YouTube của bạn vào đây">
+                </div>
+
+                <button type="button" class="btn btn-danger mt-4 next-btn w-100">Tiếp theo ➜</button>
+            </div>
+
+            <!-- Step 2 -->
+
+            <div class="step hidden">
+                <h5 class="mb-3">💌 Tên hoặc biệt danh người nhận </h5>
+                <input class="form-control message-box-dear mb-3" placeholder="Ví dụ: 'Bé Lan' => Gửi Bé Lan"
+                    type="text">
+
+                <h5 class="mb-3">💌 Ghi lại lời nhắn gửi của bạn cho đối phương</h5>
+                <textarea class="form-control message-box mb-3" rows="6"
+                    placeholder="Ghi lại lời nhắn gửi của bạn cho đối phương"></textarea>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-secondary prev-btn">⬅ QUay lại</button>
+                    <button type="button" class="btn btn-danger next-btn">Tiếp theo ➜</button>
+                </div>
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="step hidden">
+                <h5 class="mb-3">📸 Tải lên video kỷ niệm</h5>
+                <input type="file" id="videoUpload" class="form-control video-upload mb-3" accept="video/*">
+
+                <h5 class="mb-3">📸 Tải lên lời chúc của bạn bằng hội thoại (nếu có)</h5>
+                <input type="file" id="audioUpload" class="form-control audio-upload" accept="audio/*">
+                <audio id="audioPreview" controls style="width:100%; margin-top:10px; display:none;"></audio>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="button" class="btn btn-secondary prev-btn">⬅ QUay lại</button>
+                    <button type="button" class="btn btn-danger next-btn">Tiếp theo ➜</button>
+                </div>
+
+
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step hidden">
+                <h5 class="mb-3">✅ Hoàn tất</h5>
+                <p>Đã hoàn tất quá trình chuẩn bị nội dung, Dữ liệu sẽ được chuyển đến cửa hàng để tạo mã và kèm theo
+                    quà, Hãy nhấn " Tạo mẫu " để tạo mẫu nhé.</p>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary prev-btn">⬅ Quay lại</button>
+                    <button type="submit" class="btn btn-success">Tạo mẫu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const steps = document.querySelectorAll('.step');
+            const indicators = document.querySelectorAll('.step-circle');
+            const nextBtns = document.querySelectorAll('.next-btn');
+            const prevBtns = document.querySelectorAll('.prev-btn');
+            let currentStep = 0;
+
+            function showStep(index) {
+                steps.forEach((s, i) => {
+                    s.classList.toggle('hidden', i !== index);
+                    s.classList.toggle('active', i === index);
+                    indicators[i].classList.toggle('active', i === index);
+                });
+            }
+
+            nextBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentStep < steps.length - 1) {
+                        currentStep++;
+                        showStep(currentStep);
+                    }
+                });
+            });
+
+            prevBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        showStep(currentStep);
+                    }
+                });
+            });
+
+            // Tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    tabContents.forEach(c => c.classList.add('hidden'));
+                    document.getElementById(btn.dataset.tab).classList.remove('hidden');
+                });
+            });
+
+            // Preview âm thanh
+            const audioInput = document.getElementById('audioUpload');
+            const audioPreview = document.getElementById('audioPreview');
+            audioInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    audioPreview.src = URL.createObjectURL(file);
+                    audioPreview.style.display = 'block';
+                    audioPreview.play();
+                } else {
+                    audioPreview.style.display = 'none';
+                    audioPreview.src = '';
+                }
+            });
+
+            // Hiển thị bước đầu tiên khi load trang
+            showStep(currentStep);
+        });
+    </script>
+
+
+</body>
+
+</html>

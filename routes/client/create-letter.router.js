@@ -6,7 +6,7 @@ const controller = require("../../controllers/client/create-letter.controller");
 
 // const upload = multer();
 
-router.get("/", controller.createLetter);
+router.get("/:idtemplate", controller.createLetter);
 
 
 module.exports = router;
