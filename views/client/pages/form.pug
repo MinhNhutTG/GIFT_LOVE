@@ -155,6 +155,73 @@ head
     background: #fff8fb;
     box-shadow: 0 0 6px rgba(255, 92, 141, 0.2);
     }
+    #suggested.tab-content {
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+        /* Tùy chỉnh thanh cuộn */
+    #suggested.tab-content::-webkit-scrollbar {
+        width: 6px;
+    }
+    #suggested.tab-content::-webkit-scrollbar-thumb {
+        background: #d1b3ff;
+        border-radius: 10px;
+    }
+    #suggested.tab-content::-webkit-scrollbar-thumb:hover {
+        background: #b37aff;
+    }
+
+        /* Thẻ bài hát */
+    #suggested .list-group-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f9f3ff;
+        border: 1px solid #e6ccff;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+        /* Hiệu ứng hover */
+    #suggested .list-group-item:hover {
+        background: #f0e0ff;
+        box-shadow: 0 2px 6px rgba(180, 130, 255, 0.2);
+    }
+
+        /* Radio + tên bài hát */
+    #suggested .list-group-item input[type="radio"] {
+        accent-color: #a46cff;
+        margin-right: 8px;
+        transform: scale(1.2);
+    }
+
+    #suggested .list-group-item span, #suggested .list-group-item label {
+        flex: 1;
+        font-weight: 500;
+        color: #5b2cc7;
+    }
+
+        /* Player nhỏ gọn */
+    #suggested audio {
+        width: 130px;
+        height: 28px;
+        border-radius: 6px;
+        background-color: #fff;
+        outline: none;
+    }
+
+        /* Tùy chỉnh khung audio (ẩn background mặc định trên Chrome) */
+    #suggested audio::-webkit-media-controls-panel {
+        background-color: transparent;
+    }
+    #suggested audio::-webkit-media-controls-play-button {
+        filter: hue-rotate(270deg) brightness(1.3);
+    }
 .form-card
   h3.text-center.text-danger.fw-bold.mb-4 T&#x1EA1;o m&#x1EAB;u 
   // Steps
@@ -166,7 +233,7 @@ head
   form#galleryForm
     // Step 1
     .step.active
-      h5.mb-3 &#x1F3B5; Choose a song for your gallery
+      h5.mb-3 &#x1F3B5; Chọn một bài hát
       // Tabs
       ul#songTabs.nav.nav-pills.mb-3.justify-content-center
         li.nav-item
@@ -177,38 +244,40 @@ head
         .list-group
           label.list-group-item
             input.form-check-input.me-2(type='radio' name='song' value='The Perfect Fan - Backstreet Boys')
-            |                             &#x1F3A7; The Perfect Fan - Backstreet Boys
-          label.list-group-item
-            input.form-check-input.me-2(type='radio' name='song' value='Dear Mama - 2Pac')
-            |                             &#x1F3A7; Dear Mama - 2Pac
-          label.list-group-item
-            input.form-check-input.me-2(type='radio' name='song' value='A Song for Mama - Boyz II Men')
-            |                             &#x1F3A7; A Song for Mama - Boyz II Men
-          label.list-group-item
-            input.form-check-input.me-2(type='radio' name='song' value='A Song for Mama - Boyz II Men')
-            |                             &#x1F3A7; A Song for Mama - Boyz II Men
-          label.list-group-item
-            input.form-check-input.me-2(type='radio' name='song' value='A Song for Mama - Boyz II Men')
-            |                             &#x1F3A7; A Song for Mama - Boyz II Men
+            |                             &#x1F3A7; Hơn Cả Yêu - Đức Phúc
+            audio(controls preload='none' style='width:130px; height:30px;')
+                source(src='https://giftlove-bucket.s3.ap-southeast-2.amazonaws.com/Sound/7109713857460.mp3' type='audio/mpeg')
+                | Trình duyệt của bạn không hỗ trợ audio.
       #custom.tab-content.hidden
         input.form-control.mt-2(type='text' placeholder='Dán liên kết YouTube của bạn vào đây')
       button.btn.btn-danger.mt-4.next-btn.w-100(type='button') Ti&#x1EBF;p theo &#x279C;
     // Step 2
     .step.hidden
-      h5.mb-3 &#x1F48C; T&ecirc;n ho&#x1EB7;c bi&#x1EC7;t danh ng&#x1B0;&#x1EDD;i nh&#x1EAD;n 
-      input.form-control.message-box-dear.mb-3(placeholder="Ví dụ: 'Bé Lan' => Gửi Bé Lan" type='text')
-      h5.mb-3 &#x1F48C; Ghi l&#x1EA1;i l&#x1EDD;i nh&#x1EAF;n g&#x1EED;i c&#x1EE7;a b&#x1EA1;n cho &dstrok;&#x1ED1;i ph&#x1B0;&#x1A1;ng
-      textarea.form-control.message-box.mb-3(rows='6' placeholder='Ghi lại lời nhắn gửi của bạn cho đối phương')
+      each field in fields
+        if field.step == "2"
+          if field.type === "textarea"
+            h5.mb-3 &#x1F48C; #{field.label}
+            textarea.form-control.message-box.mb-3(rows='6' placeholder='Xin chào')
+          else if field.type === "text"
+           h5.mb-3 &#x1F48C; #{field.label}
+           input.form-control.message-box-dear.mb-3(placeholder="Hi" type='text')
+
+          
       .d-flex.justify-content-between.mt-3
-        button.btn.btn-secondary.prev-btn(type='button') &#x2B05; QUay l&#x1EA1;i
+        button.btn.btn-secondary.prev-btn(type='button') &#x2B05; Quay l&#x1EA1;i
         button.btn.btn-danger.next-btn(type='button') Ti&#x1EBF;p theo &#x279C;
     // Step 3
     .step.hidden
-      h5.mb-3 &#x1F4F8; T&#x1EA3;i l&ecirc;n video k&#x1EF7; ni&#x1EC7;m
-      input#videoUpload.form-control.video-upload.mb-3(type='file' accept='video/*')
-      h5.mb-3 &#x1F4F8; T&#x1EA3;i l&ecirc;n l&#x1EDD;i ch&uacute;c c&#x1EE7;a b&#x1EA1;n b&#x1EB1;ng h&#x1ED9;i tho&#x1EA1;i (n&#x1EBF;u c&oacute;)
-      input#audioUpload.form-control.audio-upload(type='file' accept='audio/*')
-      audio#audioPreview(controls='' style='width:100%; margin-top:10px; display:none;')
+      each field in fields
+        if field.step == "3"
+          if field.type === "video"
+            h5.mb-3 &#x1F4F8; #{field.label}
+            input#videoUpload.form-control.video-upload.mb-3(type='file' accept='video/*')
+          else if field.type === "voice"
+            h5.mb-3 &#x1F4F8; #{field.label}
+            input#audioUpload.form-control.audio-upload(type='file' accept='audio/*')
+            audio#audioPreview(controls='' style='width:100%; margin-top:10px; display:none;')
+  
       .d-flex.justify-content-between.mt-3
         button.btn.btn-secondary.prev-btn(type='button') &#x2B05; QUay l&#x1EA1;i
         button.btn.btn-danger.next-btn(type='button') Ti&#x1EBF;p theo &#x279C;
