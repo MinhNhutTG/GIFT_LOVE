@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const templateSchema  = new mongoose.Schema({
     title: String,
+    type: String,
     description:String,
     previewUrl: String,
     deleted: {  type: Boolean, default: false },

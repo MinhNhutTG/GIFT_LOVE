@@ -230,26 +230,27 @@ head
     .step-circle 2
     .step-circle 3
     .step-circle 4
-  form#galleryForm
+  form#formCreate(method='POST' action='/create-letter/create?_method=POST' enctype="multipart/form-data" )
     // Step 1
     .step.active
+      input(type='hidden' name='typeTemplate' value=typeTemplate)
       h5.mb-3 &#x1F3B5; Chọn một bài hát
       // Tabs
       ul#songTabs.nav.nav-pills.mb-3.justify-content-center
         li.nav-item
-          button.nav-link.tab-btn.active(type='button' data-tab='suggested') Nh&#x1EA1;c &dstrok;&#x1EC1; xu&#x1EA5;t
-        li.nav-item
-          button.nav-link.tab-btn(type='button' data-tab='custom') Li&ecirc;n k&#x1EBF;t t&ugrave;y ch&#x1EC9;nh
+          button.nav-link.tab-btn.active(type='button'  data-tab='suggested') Nh&#x1EA1;c &dstrok;&#x1EC1; xu&#x1EA5;t
+        //- li.nav-item
+        //-   button.nav-link.tab-btn(type='button'  data-tab='custom') Li&ecirc;n k&#x1EBF;t t&ugrave;y ch&#x1EC9;nh
       #suggested.tab-content
         .list-group
           label.list-group-item
-            input.form-check-input.me-2(type='radio' name='song' value='The Perfect Fan - Backstreet Boys')
+            input.form-check-input.me-2(type='radio' name='song' value='https://giftlove-bucket.s3.ap-southeast-2.amazonaws.com/Sound/7109713857460.mp3')
             |                             &#x1F3A7; Hơn Cả Yêu - Đức Phúc
             audio(controls preload='none' style='width:130px; height:30px;')
                 source(src='https://giftlove-bucket.s3.ap-southeast-2.amazonaws.com/Sound/7109713857460.mp3' type='audio/mpeg')
                 | Trình duyệt của bạn không hỗ trợ audio.
-      #custom.tab-content.hidden
-        input.form-control.mt-2(type='text' placeholder='Dán liên kết YouTube của bạn vào đây')
+      //- #custom.tab-content.hidden
+      //-   input.form-control.mt-2(type='text' placeholder='Dán liên kết YouTube của bạn vào đây')
       button.btn.btn-danger.mt-4.next-btn.w-100(type='button') Ti&#x1EBF;p theo &#x279C;
     // Step 2
     .step.hidden
@@ -257,10 +258,10 @@ head
         if field.step == "2"
           if field.type === "textarea"
             h5.mb-3 &#x1F48C; #{field.label}
-            textarea.form-control.message-box.mb-3(rows='6' placeholder='Xin chào')
+            textarea.form-control.message-box.mb-3(rows='6' name=field.name placeholder='Xin chào')
           else if field.type === "text"
            h5.mb-3 &#x1F48C; #{field.label}
-           input.form-control.message-box-dear.mb-3(placeholder="Hi" type='text')
+           input.form-control.message-box-dear.mb-3(placeholder="Hi" name=field.name type='text')
 
           
       .d-flex.justify-content-between.mt-3
@@ -272,10 +273,10 @@ head
         if field.step == "3"
           if field.type === "video"
             h5.mb-3 &#x1F4F8; #{field.label}
-            input#videoUpload.form-control.video-upload.mb-3(type='file' accept='video/*')
+            input#videoUpload.form-control.video-upload.mb-3(type='file' accept='video/*' name='files')
           else if field.type === "voice"
             h5.mb-3 &#x1F4F8; #{field.label}
-            input#audioUpload.form-control.audio-upload(type='file' accept='audio/*')
+            input#audioUpload.form-control.audio-upload(type='file' accept='audio/*' name='files')
             audio#audioPreview(controls='' style='width:100%; margin-top:10px; display:none;')
   
       .d-flex.justify-content-between.mt-3

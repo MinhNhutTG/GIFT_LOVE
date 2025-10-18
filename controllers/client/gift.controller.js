@@ -1,6 +1,19 @@
 // [GET] /admin/dashboard
-const Template = require("../../models/template.model");
-module.exports.gift = (req,res)=>{
+const Gift = require("../../models/gift.model");
 
-    res.render("./client/pages/templates/radio-love.pug");
+module.exports.gift = async (req,res)=>{
+    let typeTemplate = "";
+    const id = req.params.id;
+    let find = {
+        _id: id,
+        isDeleted: false,
+        isFinite: true,
+    }
+    const gift = await Gift.findById(find);
+
+    typeTemplate = gift.typeTemplate;
+
+    res.render(`./client/pages/templates/${typeTemplate}.pug`,{
+        gift: gift,
+    });
 }
